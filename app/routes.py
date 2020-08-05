@@ -3,7 +3,7 @@ from flask import request, jsonify, make_response
 from app.models import Message
 import base64
 
-
+#usually I would do it in a DB but figured it's not the scope of this assignment 
 users = {
     "ronica": "123",
     "amir": "321"
@@ -26,8 +26,6 @@ def if_authenticated_return_username():
 
 @app.route("/allMessages")
 def all_messages():
-    #the map function itarets on the query and then the lambda serializes each message and it's all wrapped with a list
-    #because map return a map object
     return jsonify({'all messages': list(map(lambda mes: mes.serialize(), Message.query.all()))})
 
 
@@ -45,6 +43,8 @@ def writeMessage():
 @app.route("/get_user_messages", methods=['GET'])
 def get_messages():
     if if_authenticated_return_username():
+        #the map function itarets on the query and then the lambda serializes each message and it's all wrapped with a list
+        #because map return a map object
         return jsonify({if_authenticated_return_username() + "'s messages": list(map(lambda mes: mes.serialize(), Message.query.filter_by(receiver=if_authenticated_return_username())))})
     return jsonify({"permission denied": True})
 
