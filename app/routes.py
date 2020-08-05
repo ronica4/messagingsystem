@@ -9,6 +9,10 @@ users = {
     "amir": "321"
 }
 
+#heroku has an ephemeral file system which is reset on restarts/deploys so i wrote this line to not get an empty DB exception during this assignment
+#in real deployments i would choose something like AWS dynamo DB
+db.create_all()
+
 
 @app.errorhandler(Exception)
 def all_exception_handler(error):
