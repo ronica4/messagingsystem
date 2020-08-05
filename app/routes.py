@@ -49,13 +49,6 @@ def get_messages():
     return jsonify({"permission denied": True})
 
 
-@app.route("/<string:user>/", methods=['GET'])
-def get_user_messages(user):
-    if if_authenticated_return_username() and if_authenticated_return_username() == user:
-        return jsonify({user + "'s messages": list(map(lambda mes: mes.serialize(), Message.query.filter_by(receiver=user)))})
-    return jsonify({"permission denied": True})
-
-
 @app.route("/read/<int:message_id>", methods=['GET'])
 def read_message(message_id):
     message = Message.query.get_or_404(message_id)
@@ -70,13 +63,6 @@ def read_message(message_id):
 def get_unread_messages():
     if if_authenticated_return_username():
         return jsonify({'unread messages for ' + if_authenticated_return_username(): list(map(lambda mes: mes.serialize(), Message.query.filter_by(receiver=if_authenticated_return_username(), status='unread')))})
-    return jsonify({"permission denied": True})
-
-
-@app.route("/<string:user>/unread", methods=['GET'])
-def get_unread_user_messages(user):
-    if if_authenticated_return_username() and if_authenticated_return_username() == user:
-        return jsonify({'unread messages for ' + user: list(map(lambda mes: mes.serialize(), Message.query.filter_by(receiver=user, status='unread')))})
     return jsonify({"permission denied": True})
 
 
