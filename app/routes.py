@@ -20,7 +20,7 @@ def if_authenticated_return_username():
         data = base64.b64decode((request.headers['authorization'].split(' ')[1]).encode('ascii')).decode('ascii')
         username, password = data.split(':', 1)
         if username in users and users.get(username) == password:
-                return username
+            return username
     return False
 
 
@@ -83,7 +83,7 @@ def get_unread_user_messages(user):
 @app.route("/delete/<int:message_id>/", methods=['DELETE'])
 def delete_message(message_id):
     message = Message.query.get_or_404(message_id)
-    if if_authenticated_return_username() and if_authenticated_return_username() == message.sender or if_authenticated_return_username() == message.receiver:
+    if if_authenticated_return_username() == message.sender or if_authenticated_return_username() == message.receiver:
         db.session.delete(message)
         db.session.commit()
         return jsonify({"deleted": True})
